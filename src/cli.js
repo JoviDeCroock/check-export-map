@@ -43,7 +43,11 @@ const error = (file, msg) => {
 };
 
 function validateValue(relative, dir, entry, value, type) {
-	if (!value.startsWith(".")) {
+	if (typeof value === 'object') {
+		for (const entry in value) {
+			validateValue(relative, dir, entry, value[entry]);
+		}
+	} else if (!value.startsWith(".")) {
 		error(
 			relative,
 			`File paths must be relative and start with a dot. Got "${value}" instead`,
